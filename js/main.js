@@ -73,7 +73,7 @@ sections.forEach((s) => sectionObserver.observe(s));
 
 // ============ Rotating hero role ============
 const roles = [
-  "Full-Stack Java Developer",
+  "Full-Stack Developer",
   "Machine Learning Enthusiast",
   "Web Developer",
   "Data Engineering Student",
