@@ -71,19 +71,48 @@ const sectionObserver = new IntersectionObserver(
 
 sections.forEach((s) => sectionObserver.observe(s));
 
-// ============ Hero name jumble-in ============
-// Each letter starts rotated/offset at random, then straightens out on its
-// own delay — the whole name settles in roughly 3 seconds.
+// ============ Hero name slot-machine spin-in ============
+// Each letter becomes a vertical reel of random characters that spins fast
+// and decelerates onto the real letter — the name locks in over ~3 seconds.
 // Intentionally plays even under prefers-reduced-motion.
 const nameEl = document.querySelector(".hero-name");
 
 if (nameEl) {
-  const jumble = (el) => {
-    el.classList.add("jumble-letter");
-    el.style.setProperty("--jr", `${(Math.random() * 240 - 120).toFixed(0)}deg`);
-    el.style.setProperty("--jx", `${(Math.random() * 0.8 - 0.4).toFixed(2)}em`);
-    el.style.setProperty("--jy", `${(Math.random() * 1.0 - 0.5).toFixed(2)}em`);
-    el.style.setProperty("--jd", `${(Math.random() * 1.8).toFixed(2)}s`);
+  const REEL_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  const randChar = () => REEL_CHARS[Math.floor(Math.random() * REEL_CHARS.length)];
+
+  // screen readers get the real name while the reels show random characters
+  nameEl.setAttribute("aria-label", nameEl.textContent);
+
+  const buildReel = (ch) => {
+    const reel = document.createElement("span");
+    reel.className = "reel";
+    reel.dataset.ch = ch;
+    reel.setAttribute("aria-hidden", "true");
+
+    // invisible copy of the real letter keeps the reel's width and baseline
+    const sizer = document.createElement("span");
+    sizer.className = "reel-sizer";
+    sizer.textContent = ch;
+
+    const strip = document.createElement("span");
+    strip.className = "reel-strip";
+    const spins = 8 + Math.floor(Math.random() * 7); // 8–14 chars fly past
+    for (let i = 0; i < spins; i++) {
+      const cell = document.createElement("span");
+      cell.textContent = randChar();
+      strip.append(cell);
+    }
+    const target = document.createElement("span");
+    target.textContent = ch;
+    strip.append(target);
+
+    strip.style.setProperty("--n", spins);
+    strip.style.setProperty("--dur", `${(1.1 + Math.random() * 1.3).toFixed(2)}s`);
+    strip.style.setProperty("--jd", `${(Math.random() * 0.5).toFixed(2)}s`);
+
+    reel.append(sizer, strip);
+    return reel;
   };
 
   [...nameEl.childNodes].forEach((node) => {
@@ -93,25 +122,32 @@ if (nameEl) {
         if (ch.trim() === "") {
           frag.append(ch); // keep spaces so words still wrap normally
         } else {
-          const s = document.createElement("span");
-          s.textContent = ch;
-          jumble(s);
-          frag.append(s);
+          frag.append(buildReel(ch));
         }
       }
       node.replaceWith(frag);
     } else if (node.nodeType === Node.ELEMENT_NODE) {
-      jumble(node); // the accent "." span
+      // the accent "." span — put its reel inside so it keeps its color
+      const ch = node.textContent;
+      node.textContent = "";
+      node.append(buildReel(ch));
     }
   });
 
-  // force a reflow so the scattered state registers before any settling
+  // force a reflow so the reels' start position registers before spinning
   void nameEl.offsetWidth;
 
-  // Hold the jumbled state until the page has loaded, is actually being
-  // looked at, and 400ms have passed — otherwise a fast load can burn
-  // through the animation before the first paint is ever seen.
-  const settle = () => setTimeout(() => nameEl.classList.add("settled"), 400);
+  // Hold the reels until the page has loaded, is actually being looked at,
+  // and 400ms have passed — otherwise a fast load can burn through the
+  // animation before the first paint is ever seen.
+  const settle = () =>
+    setTimeout(() => {
+      nameEl.classList.add("settled");
+      // once every reel has landed, swap them back to plain text
+      setTimeout(() => {
+        nameEl.querySelectorAll(".reel").forEach((r) => r.replaceWith(r.dataset.ch));
+      }, 3400);
+    }, 400);
   const armSettle = () => {
     if (document.visibilityState === "visible") {
       settle();

@@ -188,16 +188,34 @@ body {
   line-height: 1.05;
 }
 
-/* jumble-in: letters start scattered and straighten out (~3s total) */
-.jumble-letter {
+/* slot-machine reels: each letter spins through random characters and
+   decelerates onto the real one (~3s total) */
+.hero-name { --cell: 1.05em; }
+.reel {
+  position: relative;
   display: inline-block;
-  transform: rotate(var(--jr, 0deg)) translate(var(--jx, 0), var(--jy, 0));
-  transition: transform 1.15s cubic-bezier(0.22, 1, 0.36, 1);
+  height: var(--cell);
+  /* clip-path instead of overflow:hidden keeps the natural text baseline */
+  clip-path: inset(0);
+}
+.reel-sizer { visibility: hidden; }
+.reel-strip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  transition: transform var(--dur, 1.5s) cubic-bezier(0.12, 0.8, 0.25, 1);
   transition-delay: var(--jd, 0s);
   will-change: transform;
 }
-.hero-name.settled .jumble-letter {
-  transform: rotate(0deg) translate(0, 0);
+.reel-strip span {
+  display: block;
+  height: var(--cell);
+  line-height: var(--cell);
+  text-align: center;
+}
+.hero-name.settled .reel-strip {
+  transform: translateY(calc(var(--n, 0) * var(--cell) * -1));
 }
 
 .hero-role {
@@ -551,6 +569,6 @@ body {
   html { scroll-behavior: auto; }
   .reveal { opacity: 1; transform: none; transition: none; }
   .blob, .wheel { animation: none; }
-  /* .jumble-letter is exempt: the name jumble plays for everyone */
-  *:not(.jumble-letter) { transition-duration: 0.01ms !important; }
+  /* .reel-strip is exempt: the name slot-machine spin plays for everyone */
+  *:not(.reel-strip) { transition-duration: 0.01ms !important; }
 }
