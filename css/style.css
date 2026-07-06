@@ -378,7 +378,6 @@ body {
 .banner-gas     { background: linear-gradient(135deg, #1e3a8a, #38bdf855), var(--bg-soft); }
 .banner-ml      { background: linear-gradient(135deg, #312e81, #818cf855), var(--bg-soft); }
 .banner-dl      { background: linear-gradient(135deg, #7c2d12, #fb923c55), var(--bg-soft); }
-.banner-desktop { background: linear-gradient(135deg, #4a044e, #d946ef55), var(--bg-soft); }
 
 .project-body { padding: 22px 24px 8px; flex: 1; }
 
@@ -422,13 +421,6 @@ body {
 }
 .repo-link::after { content: "→"; transition: transform 0.25s ease; }
 .repo-link:hover::after { transform: translateX(4px); }
-
-.repo-link.soon {
-  color: var(--text-dim);
-  cursor: default;
-  pointer-events: none;
-}
-.repo-link.soon::after { content: "⏳"; }
 
 /* ============ Mini projects ============ */
 .more-title {

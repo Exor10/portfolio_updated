@@ -112,14 +112,13 @@ if (!reduceMotion && roleEl) {
   setTimeout(typeLoop, 2200);
 }
 
-// ============ Repo link placeholders ============
-// Links still pointing at "#" show as "coming soon" until a real URL is added.
-document.querySelectorAll(".repo-link").forEach((link) => {
-  if (link.getAttribute("href") === "#") {
-    link.classList.add("soon");
-    link.textContent = "Repo coming soon ";
-    link.removeAttribute("target");
-  }
+// ============ Project repo links ============
+// URLs come from js/repos.js — cards whose entry is "" fall back to DEFAULT_REPO.
+document.querySelectorAll("[data-project]").forEach((card) => {
+  const link = card.querySelector(".repo-link");
+  if (!link) return;
+  const url = (typeof PROJECT_REPOS !== "undefined" && PROJECT_REPOS[card.dataset.project]) || "";
+  link.href = url || (typeof DEFAULT_REPO !== "undefined" ? DEFAULT_REPO : link.href);
 });
 
 // ============ Footer year ============

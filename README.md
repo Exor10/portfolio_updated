@@ -7,30 +7,26 @@ Pure static site — no build step. HTML + CSS + vanilla JS, hosted on GitHub Pa
 
 ## Adding repo links to projects
 
-Every project card has a placeholder link that currently shows **"Repo coming soon"**.
-To activate one:
+All repo links are configured in one file: **`js/repos.js`**.
 
-1. Open `index.html`
-2. Search for the project name (e.g. `Enomy-Finances`)
-3. Just below it, find the line marked with a comment:
+Each project has an entry there. Paste your repo URL between the quotes:
 
-   ```html
-   <!-- ⇩ Paste your repo URL in the href below -->
-   <a class="repo-link" href="#" target="_blank" rel="noopener">View Repo</a>
-   ```
+```js
+const PROJECT_REPOS = {
+  "enomy-finances": "https://github.com/Exor10/enomy-finances",  // ← done
+  "attendance-scanner": "",                                      // ← still empty
+  ...
+};
+```
 
-4. Replace `#` with your repo URL:
-
-   ```html
-   <a class="repo-link" href="https://github.com/Exor10/enomy-finances" target="_blank" rel="noopener">View Repo</a>
-   ```
-
-5. Commit and push — the link automatically switches from "Repo coming soon" to an active "View Repo →".
+Projects left as `""` link to this portfolio repo (`DEFAULT_REPO`) in the meantime.
+Commit and push — done.
 
 ## Structure
 
 ```
 ├── index.html      # all content (hero, tech stack, projects, contact)
 ├── css/style.css   # dark theme, animations, layout
+├── js/repos.js     # ⇦ paste project repo URLs here
 └── js/main.js      # scroll reveals, nav highlighting, typing effect
 ```
