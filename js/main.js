@@ -71,6 +71,44 @@ const sectionObserver = new IntersectionObserver(
 
 sections.forEach((s) => sectionObserver.observe(s));
 
+// ============ Hero name jumble-in ============
+// Each letter starts rotated/offset at random, then straightens out on its
+// own delay — the whole name settles in roughly 3 seconds.
+const nameEl = document.querySelector(".hero-name");
+
+if (!reduceMotion && nameEl) {
+  const jumble = (el) => {
+    el.classList.add("jumble-letter");
+    el.style.setProperty("--jr", `${(Math.random() * 240 - 120).toFixed(0)}deg`);
+    el.style.setProperty("--jx", `${(Math.random() * 0.8 - 0.4).toFixed(2)}em`);
+    el.style.setProperty("--jy", `${(Math.random() * 1.0 - 0.5).toFixed(2)}em`);
+    el.style.setProperty("--jd", `${(Math.random() * 1.8).toFixed(2)}s`);
+  };
+
+  [...nameEl.childNodes].forEach((node) => {
+    if (node.nodeType === Node.TEXT_NODE) {
+      const frag = document.createDocumentFragment();
+      for (const ch of node.textContent) {
+        if (ch.trim() === "") {
+          frag.append(ch); // keep spaces so words still wrap normally
+        } else {
+          const s = document.createElement("span");
+          s.textContent = ch;
+          jumble(s);
+          frag.append(s);
+        }
+      }
+      node.replaceWith(frag);
+    } else if (node.nodeType === Node.ELEMENT_NODE) {
+      jumble(node); // the accent "." span
+    }
+  });
+
+  // force a reflow so the scattered state registers, then start the settle
+  void nameEl.offsetWidth;
+  nameEl.classList.add("settled");
+}
+
 // ============ Rotating hero role ============
 const roles = [
   "Full-Stack Developer",
