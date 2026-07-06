@@ -104,9 +104,30 @@ if (!reduceMotion && nameEl) {
     }
   });
 
-  // force a reflow so the scattered state registers, then start the settle
+  // force a reflow so the scattered state registers before any settling
   void nameEl.offsetWidth;
-  nameEl.classList.add("settled");
+
+  // Hold the jumbled state until the page has loaded, is actually being
+  // looked at, and 400ms have passed — otherwise a fast load can burn
+  // through the animation before the first paint is ever seen.
+  const settle = () => setTimeout(() => nameEl.classList.add("settled"), 400);
+  const armSettle = () => {
+    if (document.visibilityState === "visible") {
+      settle();
+    } else {
+      document.addEventListener("visibilitychange", function onVis() {
+        if (document.visibilityState === "visible") {
+          document.removeEventListener("visibilitychange", onVis);
+          settle();
+        }
+      });
+    }
+  };
+  if (document.readyState === "complete") {
+    armSettle();
+  } else {
+    window.addEventListener("load", armSettle, { once: true });
+  }
 }
 
 // ============ Rotating hero role ============
