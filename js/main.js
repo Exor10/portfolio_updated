@@ -74,9 +74,10 @@ sections.forEach((s) => sectionObserver.observe(s));
 // ============ Hero name jumble-in ============
 // Each letter starts rotated/offset at random, then straightens out on its
 // own delay — the whole name settles in roughly 3 seconds.
+// Intentionally plays even under prefers-reduced-motion.
 const nameEl = document.querySelector(".hero-name");
 
-if (!reduceMotion && nameEl) {
+if (nameEl) {
   const jumble = (el) => {
     el.classList.add("jumble-letter");
     el.style.setProperty("--jr", `${(Math.random() * 240 - 120).toFixed(0)}deg`);

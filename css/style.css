@@ -551,5 +551,6 @@ body {
   html { scroll-behavior: auto; }
   .reveal { opacity: 1; transform: none; transition: none; }
   .blob, .wheel { animation: none; }
-  * { transition-duration: 0.01ms !important; }
+  /* .jumble-letter is exempt: the name jumble plays for everyone */
+  *:not(.jumble-letter) { transition-duration: 0.01ms !important; }
 }
