@@ -1,0 +1,224 @@
+@import "tailwindcss";
+
+/* ============ Design tokens ============ */
+@theme {
+  /* colour → bg-surface, text-muted, border-hairline, text-accent… */
+  --color-bg: #0a0a0b;
+  --color-surface: #111113;
+  --color-surface-2: #17171a;
+  --color-hairline: #232327;
+  --color-hairline-strong: #34343a;
+  --color-fg: #ededef;
+  --color-muted: #a1a1aa;
+  --color-subtle: #71717a;
+  --color-accent: #7aa7ff;
+  --color-accent-soft: rgb(122 167 255 / 0.12);
+  --color-live: #4ade80;
+  --color-wip: #facc15;
+
+  /* type: Geist comes in through next/font in app/layout.tsx */
+  --font-sans: var(--font-geist), system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  /* the page reads at line-height 1.6 throughout, so the stock sizes use it too */
+  --text-xs--line-height: 1.6;
+  --text-sm--line-height: 1.6;
+  --text-base--line-height: 1.6;
+  --text-lg--line-height: 1.6;
+  --text-xl--line-height: 1.6;
+
+  --text-hero: clamp(2.75rem, 8.5vw, 5.5rem);
+  --text-hero--line-height: 1;
+  --text-hero--letter-spacing: -0.045em;
+  --text-role: clamp(1.15rem, 5.4vw, 2.1rem);
+  --text-role--letter-spacing: -0.02em;
+  --text-section: clamp(1.9rem, 4.2vw, 2.75rem);
+  --text-section--line-height: 1.1;
+  --text-section--letter-spacing: -0.035em;
+
+  /* shape: rounded-md (6px) and rounded-lg (8px) are Tailwind's own */
+  --radius-card: 14px;
+
+  /* motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@utility page-wrap {
+  width: min(1120px, 100% - 3rem);
+  margin-inline: auto;
+}
+
+/* ============ Base ============ */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background: var(--color-bg);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: rgb(122 167 255 / 0.3);
+    color: var(--color-fg);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  /* ============ Reveal on scroll (driven by RevealObserver) ============ */
+  .reveal {
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out);
+    transition-delay: var(--d, 0s);
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ============ Hero name glitch decode (GlitchName) ============ */
+  /* each letter cell keeps the real letter (invisible, via ::before) for its
+     width and baseline, with the scrambling glyph floating on top */
+  .glitch-word { white-space: nowrap; }
+  .glitch-cell {
+    position: relative;
+    display: inline-block;
+  }
+  .glitch-cell::before {
+    content: attr(data-ch);
+    visibility: hidden;
+  }
+  .glitch-glyph {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    text-align: center;
+    white-space: pre;
+  }
+  .glitch-cell:not(.locked) .glitch-glyph { color: var(--color-subtle); }
+
+  .glitching {
+    animation: rgb-split var(--glitch-dur, 1.2s) steps(1, end) both;
+  }
+  .glitching.lite { animation-name: rgb-split-lite; }
+
+  /* ============ Flip-clock title (FlipTitle) ============ */
+  /* the top leaf folds down to reveal the next title */
+  .flip {
+    position: relative;
+    display: inline-block;
+    padding: 0.18em 0.5em;
+    line-height: 1.25;
+    color: var(--color-fg);
+    white-space: nowrap;
+    background: var(--color-surface);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    perspective: 1200px;
+    transition: color 0.6s var(--ease-out);
+  }
+  .flip.landed { color: var(--color-accent); }
+
+  /* every title stacked in one cell, so the card is always as wide as the longest */
+  .flip-sizer {
+    display: grid;
+    visibility: hidden;
+    text-align: center;
+  }
+  .flip-sizer > span { grid-area: 1 / 1; }
+
+  .flip-half {
+    position: absolute;
+    left: 0; right: 0;
+    height: 50%;
+    overflow: hidden;
+  }
+  .flip-half > span {
+    position: absolute;
+    left: 0; right: 0;
+    height: 200%;
+    padding: 0.18em 0.5em;
+    text-align: center;
+  }
+  .flip-top {
+    top: 0;
+    background: var(--color-surface-2);
+    border-radius: calc(var(--radius-lg) - 1px) calc(var(--radius-lg) - 1px) 0 0;
+    /* the hinge seam: an inset shadow paints under the text, so it splits
+       the card without striking through the title */
+    box-shadow: inset 0 -1px 0 rgb(0 0 0 / 0.55);
+  }
+  .flip-top > span { top: 0; }
+  .flip-bottom {
+    bottom: 0;
+    background: var(--color-surface);
+    border-radius: 0 0 calc(var(--radius-lg) - 1px) calc(var(--radius-lg) - 1px);
+  }
+  .flip-bottom > span { bottom: 0; }
+
+  .flip-leaf {
+    z-index: 2;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+  .flip-top.flip-leaf { transform-origin: 50% 100%; }
+  .flip-bottom.flip-leaf { transform-origin: 50% 0; transform: rotateX(90deg); }
+
+  .flip.flipping .flip-top.flip-leaf {
+    animation: flip-fold 300ms cubic-bezier(0.42, 0, 1, 1) both;
+  }
+  .flip.flipping .flip-bottom.flip-leaf {
+    animation: flip-unfold 320ms cubic-bezier(0.25, 1.25, 0.5, 1) 300ms both;
+  }
+}
+
+@keyframes rgb-split {
+  0%   { text-shadow: -3px 0 rgb(255 64 96 / 0.75), 3px 0 rgb(64 220 255 / 0.75); }
+  10%  { text-shadow: 2px 1px rgb(255 64 96 / 0.7), -2px -1px rgb(64 220 255 / 0.7); }
+  20%  { text-shadow: -4px 0 rgb(255 64 96 / 0.65), 4px 0 rgb(64 220 255 / 0.65); }
+  32%  { text-shadow: 1px -1px rgb(255 64 96 / 0.6), -1px 1px rgb(64 220 255 / 0.6); }
+  44%  { text-shadow: -3px 0 rgb(255 64 96 / 0.5), 3px 0 rgb(64 220 255 / 0.5); }
+  58%  { text-shadow: 2px 0 rgb(255 64 96 / 0.4), -2px 0 rgb(64 220 255 / 0.4); }
+  72%  { text-shadow: -1px 0 rgb(255 64 96 / 0.3), 1px 0 rgb(64 220 255 / 0.3); }
+  86%  { text-shadow: 1px 0 rgb(255 64 96 / 0.15), -1px 0 rgb(64 220 255 / 0.15); }
+  100% { text-shadow: none; }
+}
+
+@keyframes rgb-split-lite {
+  0%   { text-shadow: -2px 0 rgb(255 64 96 / 0.5), 2px 0 rgb(64 220 255 / 0.5); }
+  30%  { text-shadow: 1px 0 rgb(255 64 96 / 0.4), -1px 0 rgb(64 220 255 / 0.4); }
+  65%  { text-shadow: -1px 0 rgb(255 64 96 / 0.2), 1px 0 rgb(64 220 255 / 0.2); }
+  100% { text-shadow: none; }
+}
+
+@keyframes flip-fold {
+  from { transform: rotateX(0deg); filter: brightness(1); }
+  to   { transform: rotateX(-90deg); filter: brightness(0.55); }
+}
+@keyframes flip-unfold {
+  from { transform: rotateX(90deg); filter: brightness(0.6); }
+  to   { transform: rotateX(0deg); filter: brightness(1); }
+}
+
+/* ============ Reduced motion ============ */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+  /* only transitions are cut: the name glitch and title flip run on
+     animations, so they still play for everyone */
+  * { transition-duration: 0.01ms !important; }
+}
