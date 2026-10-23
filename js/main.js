@@ -230,12 +230,13 @@ if (nameEl) {
 // visitor has spent FINAL_AFTER_MS on the page, the next flip lands on
 // FINAL_TITLE and stays there for good.
 // Intentionally plays even under prefers-reduced-motion.
-const FLIP_TITLES = ["Student Developer", "Full-Stack Developer", "Data Science Student"];
+const FLIP_TITLES = ["Student Developer", "Full-Stack Developer", "AI Engineer"];
 const FINAL_TITLE = "Future Software Engineer";
 const HOLD_MS = 2600; // how long each title stays up
 const FINAL_AFTER_MS = 30000; // visible time on the page before the final flip
 
 const flipEl = document.getElementById("role-flip");
+const articleEl = document.getElementById("role-article");
 
 if (flipEl) {
   const half = (cls, text) => {
@@ -263,6 +264,8 @@ if (flipEl) {
   flipEl.replaceChildren(sizer, top, bottom, leafFront, leafBack);
 
   const setText = (el, text) => (el.firstElementChild.textContent = text);
+  // "a Full-Stack Developer" but "an AI Engineer" (a vowel check is enough for these titles)
+  const article = (title) => (/^[AEIOU]/i.test(title) ? "an" : "a");
 
   // The static top half shows the next title straight away; the front leaf
   // folds down off it, then the back leaf falls over the old bottom half.
@@ -270,6 +273,7 @@ if (flipEl) {
     new Promise((resolve) => {
       setText(top, next);
       setText(leafBack, next);
+      if (articleEl) articleEl.textContent = article(next);
       leafBack.addEventListener(
         "animationend",
         () => {
