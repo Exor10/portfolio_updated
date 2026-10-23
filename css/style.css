@@ -408,6 +408,7 @@ body {
 .banner-gas     { background: linear-gradient(135deg, #1e3a8a, #38bdf855), var(--bg-soft); }
 .banner-ml      { background: linear-gradient(135deg, #312e81, #818cf855), var(--bg-soft); }
 .banner-dl      { background: linear-gradient(135deg, #7c2d12, #fb923c55), var(--bg-soft); }
+.banner-next    { background: linear-gradient(135deg, #134e4a, #2dd4bf55), var(--bg-soft); }
 
 .project-body { padding: 22px 24px 8px; flex: 1; }
 
