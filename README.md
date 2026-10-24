@@ -22,7 +22,11 @@ All projects live in one file: **`content/projects.ts`**.
 - `featuredProjects` are the big cards, `moreProjects` the list rows below them.
 - Give a project `repo: "https://github.com/Exor10/…"` to link its repo, or
   `live: "https://…"` to link a live site instead.
-- Projects with neither link to this portfolio repo (`DEFAULT_REPO`) for now.
+- Set `privateRepo: true` for a private repo: the project shows "Private repo"
+  instead of a link (a link would 404 for visitors).
+- Set `repo: null` for a project with no repo at all: it shows no link.
+- Projects with neither `live` nor `repo` link to this portfolio repo
+  (`DEFAULT_REPO`) for now.
 
 The tech stack works the same way in **`content/stack.ts`**.
 

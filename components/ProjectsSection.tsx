@@ -4,6 +4,7 @@ import {
   projectLink,
   type FeaturedProject,
   type MoreProject,
+  type ProjectLink,
 } from "@/content/projects";
 import Section from "./Section";
 
@@ -16,6 +17,19 @@ function Tags({ tags, className = "" }: { tags: string[]; className?: string }) 
         </li>
       ))}
     </ul>
+  );
+}
+
+/** A repo or site link, a "Private repo" note, or nothing when there's no repo. */
+function ProjectLinkSlot({ link, className = "" }: { link: ProjectLink; className?: string }) {
+  if (link === null) return null;
+  if ("note" in link) {
+    return <p className={`font-mono text-xs text-subtle ${className}`}>{link.note}</p>;
+  }
+  return (
+    <div className={className}>
+      <CardLink {...link} />
+    </div>
   );
 }
 
@@ -40,7 +54,6 @@ function CardLink({ href, label }: { href: string; label: string }) {
 }
 
 function ProjectCard({ project }: { project: FeaturedProject }) {
-  const link = projectLink(project);
   return (
     <article className="reveal group relative flex flex-col rounded-card border border-hairline bg-surface p-6 transition-colors duration-250 ease-out hover:border-hairline-strong hover:bg-surface-2 has-[a:focus-visible]:outline-2 has-[a:focus-visible]:outline-offset-2 has-[a:focus-visible]:outline-accent">
       <div className="mb-6 flex items-center justify-between gap-3">
@@ -52,9 +65,7 @@ function ProjectCard({ project }: { project: FeaturedProject }) {
         <p className="text-[0.95rem] text-muted">{project.blurb}</p>
         <Tags tags={project.tags} className="mt-4" />
       </div>
-      <div className="mt-6">
-        <CardLink {...link} />
-      </div>
+      <ProjectLinkSlot link={projectLink(project)} className="mt-6" />
     </article>
   );
 }
@@ -69,15 +80,21 @@ function Badge({ kind }: { kind: NonNullable<MoreProject["badge"]> }) {
 }
 
 function MoreProjectRow({ project }: { project: MoreProject }) {
+  const link = projectLink(project);
+  const linked = link !== null && "href" in link;
   return (
     <article className="reveal group relative border-t border-hairline py-6">
-      <h4 className="mb-1 flex items-center gap-3 font-semibold tracking-[-0.01em] transition-colors duration-150 group-hover:text-accent">
+      <h4
+        className={`mb-1 flex items-center gap-3 font-semibold tracking-[-0.01em] transition-colors duration-150 ${
+          linked ? "group-hover:text-accent" : ""
+        }`}
+      >
         {project.title}
         {project.badge && <Badge kind={project.badge} />}
       </h4>
       <p className="text-sm text-muted">{project.blurb}</p>
-      <Tags tags={project.tags} className="my-3" />
-      <CardLink {...projectLink(project)} />
+      <Tags tags={project.tags} className="mt-3" />
+      <ProjectLinkSlot link={link} className="mt-3" />
     </article>
   );
 }
