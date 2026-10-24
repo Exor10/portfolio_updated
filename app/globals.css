@@ -115,6 +115,38 @@
   }
   .glitching.lite { animation-name: rgb-split-lite; }
 
+  /* ============ RGB ring (Say Hello button) ============ */
+  /* a rotating rainbow ring (::before) with a soft glow behind it (::after);
+     the wrapped button sits on top, inset by the ring's 2px of padding */
+  .rgb-ring {
+    --rgb: conic-gradient(
+      from var(--rgb-angle),
+      #ff4d6d, #ffb84d, #f9f871, #4dff9a, #4dd8ff, #7a7aff, #e04dff, #ff4d6d
+    );
+    position: relative;
+    isolation: isolate;
+    display: inline-flex;
+    padding: 2px;
+    border-radius: calc(var(--radius-lg) + 2px);
+    animation: rgb-spin 4s linear infinite;
+  }
+  .rgb-ring::before,
+  .rgb-ring::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: var(--rgb);
+  }
+  .rgb-ring::before { z-index: -1; }
+  .rgb-ring::after {
+    z-index: -2;
+    filter: blur(12px);
+    opacity: 0.45;
+    transition: opacity var(--default-transition-duration) ease;
+  }
+  .rgb-ring:hover::after { opacity: 0.75; }
+
   /* ============ Flip-clock title (FlipTitle) ============ */
   /* the top leaf folds down to reveal the next title */
   .flip {
@@ -203,6 +235,16 @@
   30%  { text-shadow: 1px 0 rgb(255 64 96 / 0.4), -1px 0 rgb(64 220 255 / 0.4); }
   65%  { text-shadow: -1px 0 rgb(255 64 96 / 0.2), 1px 0 rgb(64 220 255 / 0.2); }
   100% { text-shadow: none; }
+}
+
+/* lets the ring's gradient angle animate (static ring where unsupported) */
+@property --rgb-angle {
+  syntax: "<angle>";
+  inherits: true;
+  initial-value: 0deg;
+}
+@keyframes rgb-spin {
+  to { --rgb-angle: 360deg; }
 }
 
 @keyframes flip-fold {
