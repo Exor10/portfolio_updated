@@ -34,7 +34,7 @@ export const stack: StackGroup[] = [
     ],
   },
   {
-    title: "Data & Machine Learning",
+    title: "AI & ML",
     items: [
       { name: "pandas", icon: "devicon-pandas-plain colored" },
       { name: "NumPy", icon: "devicon-numpy-plain colored" },
