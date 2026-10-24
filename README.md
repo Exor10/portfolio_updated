@@ -3,30 +3,50 @@
 Personal developer portfolio showcasing my tech stack and projects.
 Live at: **https://exor10.github.io/portfolio_updated/**
 
-Pure static site — no build step. HTML + CSS + vanilla JS, hosted on GitHub Pages.
+Built with Next.js, React, TypeScript and Tailwind CSS, exported as a static
+site and hosted on GitHub Pages.
 
-## Adding repo links to projects
+## Running it locally
 
-All repo links are configured in one file: **`js/repos.js`**.
-
-Each project has an entry there. Paste your repo URL between the quotes:
-
-```js
-const PROJECT_REPOS = {
-  "enomy-finances": "https://github.com/Exor10/enomy-finances",  // ← done
-  "attendance-scanner": "",                                      // ← still empty
-  ...
-};
+```bash
+npm install
+npm run dev      # http://localhost:3000/portfolio_updated
+npm run lint
+npm run build    # static site in out/
 ```
 
-Projects left as `""` link to this portfolio repo (`DEFAULT_REPO`) in the meantime.
-Commit and push — done.
+## Adding or editing projects
+
+All projects live in one file: **`content/projects.ts`**.
+
+- `featuredProjects` are the big cards, `moreProjects` the list rows below them.
+- Give a project `repo: "https://github.com/Exor10/…"` to link its repo, or
+  `live: "https://…"` to link a live site instead.
+- Projects with neither link to this portfolio repo (`DEFAULT_REPO`) for now.
+
+The tech stack works the same way in **`content/stack.ts`**.
+
+## Deploying
+
+Every push to `main` runs `.github/workflows/deploy.yml`, which lints, builds
+and publishes `out/` to GitHub Pages. Pull requests run the same lint and
+build without publishing.
+
+This needs **Settings → Pages → Build and deployment → Source: GitHub Actions**
+on the repo.
 
 ## Structure
 
 ```
-├── index.html      # all content (hero, tech stack, projects, contact)
-├── css/style.css   # design tokens, layout, animations
-├── js/repos.js     # ⇦ paste project repo URLs here
-└── js/main.js      # scroll reveals, nav highlighting, glitch name, title flip
+├── app/
+│   ├── layout.tsx      # fonts (Geist via next/font), icons, page metadata
+│   ├── page.tsx        # puts the sections together
+│   └── globals.css     # design tokens (Tailwind theme), glitch + flip styles
+├── components/         # header, hero, sections, footer
+│   ├── GlitchName.tsx  # hero name glitch decode
+│   └── FlipTitle.tsx   # "Learning as a ___" flip-clock title
+├── content/
+│   ├── projects.ts     # ⇦ projects and their links
+│   └── stack.ts        # ⇦ tech stack
+└── next.config.ts      # static export under /portfolio_updated
 ```
