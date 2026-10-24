@@ -5,9 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Nathan Ian Comiso — Developer Portfolio</title>
   <meta name="description" content="Portfolio of Nathan Ian Comiso — full-stack Java, machine learning, and web development projects." />
+  <meta name="theme-color" content="#0a0a0b" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
@@ -30,16 +31,16 @@
   <main>
     <!-- ============ HERO ============ -->
     <section id="home" class="hero">
-      <div class="blob blob-1" aria-hidden="true"></div>
-      <div class="blob blob-2" aria-hidden="true"></div>
-      <div class="grid-overlay" aria-hidden="true"></div>
-
       <div class="container hero-inner">
         <p class="hero-hello reveal">Hi, my name is</p>
         <h1 class="hero-name reveal">Nathan Ian Comiso<span class="accent">.</span></h1>
-        <h2 class="hero-role reveal">I build things as a<br /><span id="rotating-role" class="gradient-text">Full-Stack Developer</span></h2>
+        <h2 class="hero-role reveal">
+          <span class="role-prefix">Learning as <span id="role-article">a</span></span>
+          <span class="flip" id="role-flip" aria-hidden="true">Student Developer</span>
+          <span class="sr-only">Future Software Engineer</span>
+        </h2>
         <p class="hero-blurb reveal">
-          Software engineering &amp; data science student who enjoys building across the
+          Software engineering student who enjoys building across the
           whole stack — from backend services and machine learning models to
           responsive web apps and desktop tools.
         </p>
@@ -48,10 +49,6 @@
           <a href="#stack" class="btn btn-ghost">My Tech Stack</a>
         </div>
       </div>
-
-      <a href="#stack" class="scroll-hint" aria-label="Scroll down">
-        <span class="mouse"><span class="wheel"></span></span>
-      </a>
     </section>
 
     <!-- ============ TECH STACK ============ -->
@@ -61,9 +58,9 @@
         <h2 class="section-title reveal">Tech Stack</h2>
         <p class="section-sub reveal">Every technology below comes from a real project I've built — nothing padded.</p>
 
-        <div class="stack-grid">
-          <div class="stack-card reveal">
-            <h3><span class="stack-emoji">⌨️</span> Languages</h3>
+        <div class="stack-list">
+          <div class="stack-row reveal">
+            <h3 class="stack-label"><span class="stack-num">01</span>Languages</h3>
             <ul class="chips">
               <li class="chip"><i class="devicon-java-plain colored"></i>Java</li>
               <li class="chip"><i class="devicon-python-plain colored"></i>Python</li>
@@ -76,8 +73,8 @@
             </ul>
           </div>
 
-          <div class="stack-card reveal">
-            <h3><span class="stack-emoji">🧩</span> Backend &amp; Frameworks</h3>
+          <div class="stack-row reveal">
+            <h3 class="stack-label"><span class="stack-num">02</span>Backend &amp; Frameworks</h3>
             <ul class="chips">
               <li class="chip"><i class="devicon-nextjs-plain"></i>Next.js</li>
               <li class="chip"><i class="devicon-react-original colored"></i>React</li>
@@ -92,8 +89,8 @@
             </ul>
           </div>
 
-          <div class="stack-card reveal">
-            <h3><span class="stack-emoji">📊</span> Data &amp; Machine Learning</h3>
+          <div class="stack-row reveal">
+            <h3 class="stack-label"><span class="stack-num">03</span>Data &amp; Machine Learning</h3>
             <ul class="chips">
               <li class="chip"><i class="devicon-pandas-plain colored"></i>pandas</li>
               <li class="chip"><i class="devicon-numpy-plain colored"></i>NumPy</li>
@@ -105,8 +102,8 @@
             </ul>
           </div>
 
-          <div class="stack-card reveal">
-            <h3><span class="stack-emoji">🛠️</span> Tools &amp; Platforms</h3>
+          <div class="stack-row reveal">
+            <h3 class="stack-label"><span class="stack-num">04</span>Tools &amp; Platforms</h3>
             <ul class="chips">
               <li class="chip"><i class="devicon-git-plain colored"></i>Git &amp; GitHub</li>
               <li class="chip"><i class="devicon-maven-plain colored"></i>Maven</li>
@@ -135,8 +132,8 @@
 
           <!-- Kep Cool (client project: the repo is private, so the card links to the live site) -->
           <article class="project-card reveal">
-            <div class="project-banner banner-next">
-              <i class="devicon-nextjs-plain"></i>
+            <div class="project-meta">
+              <i class="devicon-nextjs-plain" aria-hidden="true"></i>
               <span class="project-type">Live Client Site</span>
             </div>
             <div class="project-body">
@@ -158,8 +155,8 @@
 
           <!-- Enomy-Finances -->
           <article class="project-card reveal" data-project="enomy-finances">
-            <div class="project-banner banner-java">
-              <i class="devicon-spring-original"></i>
+            <div class="project-meta">
+              <i class="devicon-spring-original" aria-hidden="true"></i>
               <span class="project-type">Full-Stack Java</span>
             </div>
             <div class="project-body">
@@ -180,8 +177,8 @@
 
           <!-- Attendance Scanner -->
           <article class="project-card reveal" data-project="attendance-scanner">
-            <div class="project-banner banner-web">
-              <i class="devicon-javascript-plain"></i>
+            <div class="project-meta">
+              <i class="devicon-javascript-plain" aria-hidden="true"></i>
               <span class="project-type">Web App</span>
             </div>
             <div class="project-body">
@@ -202,8 +199,8 @@
 
           <!-- Inventory System -->
           <article class="project-card reveal" data-project="inventory-system">
-            <div class="project-banner banner-gas">
-              <i class="devicon-google-plain"></i>
+            <div class="project-meta">
+              <i class="devicon-google-plain" aria-hidden="true"></i>
               <span class="project-type">Web App</span>
             </div>
             <div class="project-body">
@@ -224,8 +221,8 @@
 
           <!-- OKCupid ML -->
           <article class="project-card reveal" data-project="okcupid-ml">
-            <div class="project-banner banner-ml">
-              <i class="devicon-python-plain"></i>
+            <div class="project-meta">
+              <i class="devicon-python-plain" aria-hidden="true"></i>
               <span class="project-type">Machine Learning</span>
             </div>
             <div class="project-body">
@@ -246,8 +243,8 @@
 
           <!-- Deep Learning -->
           <article class="project-card reveal" data-project="neural-forecasting">
-            <div class="project-banner banner-dl">
-              <i class="devicon-tensorflow-original"></i>
+            <div class="project-meta">
+              <i class="devicon-tensorflow-original" aria-hidden="true"></i>
               <span class="project-type">Deep Learning</span>
             </div>
             <div class="project-body">
@@ -272,42 +269,42 @@
         <h3 class="more-title reveal">More Projects</h3>
         <div class="mini-grid">
 
-          <article class="mini-card reveal" data-project="sharksfin-store">
-            <h4>Sharksfin Store <span class="mini-badge">Live</span></h4>
+          <article class="mini-row reveal" data-project="sharksfin-store">
+            <h4>Sharksfin Store <span class="badge live">Live</span></h4>
             <p>Static e-commerce storefront deployed with a custom domain.</p>
             <ul class="tags"><li>HTML/CSS</li><li>JavaScript</li><li>GitHub Pages</li></ul>
             <a class="repo-link" href="https://github.com/Exor10/portfolio_updated" target="_blank" rel="noopener">View Repo</a>
           </article>
 
-          <article class="mini-card reveal" data-project="dobu-martial-arts">
+          <article class="mini-row reveal" data-project="dobu-martial-arts">
             <h4>DoBu Martial Arts</h4>
             <p>Responsive martial arts gym website — front-end development project.</p>
             <ul class="tags"><li>HTML/CSS</li><li>Bootstrap</li><li>jQuery</li></ul>
             <a class="repo-link" href="https://github.com/Exor10/portfolio_updated" target="_blank" rel="noopener">View Repo</a>
           </article>
 
-          <article class="mini-card reveal" data-project="java-oop">
+          <article class="mini-row reveal" data-project="java-oop">
             <h4>Java OOP Collection</h4>
             <p>Banking app, ATM interface, inheritance demos and a password generator.</p>
             <ul class="tags"><li>Java</li><li>OOP</li><li>IntelliJ</li></ul>
             <a class="repo-link" href="https://github.com/Exor10/portfolio_updated" target="_blank" rel="noopener">View Repo</a>
           </article>
 
-          <article class="mini-card reveal" data-project="sql-pipeline">
+          <article class="mini-row reveal" data-project="sql-pipeline">
             <h4>SQL Data Pipeline</h4>
             <p>CSV-to-MySQL ETL with schema design and scheduled backups via batch scripts + Task Scheduler.</p>
             <ul class="tags"><li>MySQL</li><li>SQL</li><li>Batch</li></ul>
             <a class="repo-link" href="https://github.com/Exor10/portfolio_updated" target="_blank" rel="noopener">View Repo</a>
           </article>
 
-          <article class="mini-card reveal" data-project="dogs-and-taverns">
-            <h4>Dogs and Taverns <span class="mini-badge wip">In Dev</span></h4>
+          <article class="mini-row reveal" data-project="dogs-and-taverns">
+            <h4>Dogs and Taverns <span class="badge wip">In Dev</span></h4>
             <p>A personal game project I work on in my free time — a Roblox idle autobattler / gacha RPG scripted in Luau.</p>
             <ul class="tags"><li>Luau</li><li>Roblox Studio</li></ul>
             <a class="repo-link" href="https://github.com/Exor10/portfolio_updated" target="_blank" rel="noopener">View Repo</a>
           </article>
 
-          <article class="mini-card reveal" data-project="network-design">
+          <article class="mini-row reveal" data-project="network-design">
             <h4>Enterprise Network Design</h4>
             <p>Multi-site network topology designed and simulated in Cisco Packet Tracer.</p>
             <ul class="tags"><li>Networking</li><li>Cisco Packet Tracer</li></ul>

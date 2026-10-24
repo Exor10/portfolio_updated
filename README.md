@@ -26,7 +26,7 @@ Commit and push — done.
 
 ```
 ├── index.html      # all content (hero, tech stack, projects, contact)
-├── css/style.css   # dark theme, animations, layout
+├── css/style.css   # design tokens, layout, animations
 ├── js/repos.js     # ⇦ paste project repo URLs here
-└── js/main.js      # scroll reveals, nav highlighting, typing effect
+└── js/main.js      # scroll reveals, nav highlighting, glitch name, title flip
 ```
