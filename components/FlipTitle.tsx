@@ -2,15 +2,15 @@
 
 import { useEffect, useRef, useState, type AnimationEvent } from "react";
 
-// "Learning as a ___" flips through titles like a desk flip-clock. Once the
-// visitor has spent FINAL_AFTER_MS on the page, the next flip lands on
-// FINAL_TITLE and stays there for good.
+// "Learning as a ___" flips through titles like a desk flip-clock. By the time
+// the visitor has spent FINAL_AFTER_MS on the page, it has landed on
+// FINAL_TITLE, and it stays there for good.
 // Intentionally plays even under prefers-reduced-motion.
 
 const FLIP_TITLES = ["Student Developer", "Full-Stack Developer", "AI Engineer"];
 const FINAL_TITLE = "Future Software Engineer";
 const HOLD_MS = 2600; // how long each title stays up
-const FINAL_AFTER_MS = 30000; // visible time on the page before the final flip
+const FINAL_AFTER_MS = 15000; // visible time on the page by which the final title is up
 
 // "a Full-Stack Developer" but "an AI Engineer" (a vowel check is enough for these titles)
 const article = (title: string) => (/^[AEIOU]/i.test(title) ? "an" : "a");
@@ -64,7 +64,8 @@ export default function FlipTitle({ start }: { start: boolean }) {
         timer = window.setTimeout(tick, 500);
         return;
       }
-      if (engagedMs() >= FINAL_AFTER_MS) {
+      // land now if waiting out another title would run past FINAL_AFTER_MS
+      if (engagedMs() + HOLD_MS >= FINAL_AFTER_MS) {
         await flipTo(FINAL_TITLE); // stays for good
         return;
       }

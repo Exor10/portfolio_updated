@@ -1,5 +1,8 @@
 import Button from "./Button";
+import EmailLink from "./EmailLink";
 import Section from "./Section";
+
+const EMAIL = "nathanian.comiso@gmail.com";
 
 export default function ContactSection() {
   return (
@@ -11,11 +14,12 @@ export default function ContactSection() {
       centered
     >
       <div className="reveal flex flex-wrap justify-center gap-3">
-        <Button href="mailto:greattimeatday@gmail.com">Say Hello 👋</Button>
+        <Button href={`mailto:${EMAIL}`}>Say Hello 👋</Button>
         <Button href="https://github.com/Exor10" variant="ghost" external>
           github.com/Exor10
         </Button>
       </div>
+      <EmailLink email={EMAIL} />
     </Section>
   );
 }
