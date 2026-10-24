@@ -14,7 +14,7 @@ export default function ContactSection() {
       centered
     >
       <div className="reveal flex flex-wrap justify-center gap-3">
-        <Button href={`mailto:${EMAIL}`}>Say Hello 👋</Button>
+        <Button href={`mailto:${EMAIL}`}>Say Hello</Button>
         <Button href="https://github.com/Exor10" variant="ghost" external>
           github.com/Exor10
         </Button>
